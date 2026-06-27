@@ -1,0 +1,12 @@
+# .gitignore
+
+node_modules/
+.env
+.DS_Store
+build/
+.flutter-plugins
+.packages
+.pub-cache/
+.flutter-plugins-dependencies
+/firebase-debug.log
+

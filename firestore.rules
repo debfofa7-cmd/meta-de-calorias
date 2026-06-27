@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // meals nested under user: /meals/{uid}/{date}/{mealId}
+    match /meals/{userId}/{date}/{mealId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /photos/{userId}/{date}/{photoId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /weights/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // nutrition DB - read-only for all authenticated users
+    match /nutrition/{docId} {
+      allow read: if request.auth != null;
+      allow write: if false; // administração via console ou Cloud Function com claims
+    }
+
+    // fallback: deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
